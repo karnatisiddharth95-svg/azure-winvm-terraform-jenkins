@@ -18,10 +18,10 @@ pipeline {
 
         stage('Terraform init/validate/plan') {
             steps {
-                withCredentials([string(credentialsID: 'AZURE_CLIENT_ID', variable: 'ARM_CLIENT_ID'),
-                                 string(credentialsID: 'AZURE_CLIENT_SECRET', variable: 'ARM_CLIENT_SECRET'),
-                                 string(credentialsID: 'AZURE_TENANT_ID', variable: 'ARM_TENANT_ID'),
-                                 string(credentialsID: 'AZURE_SUBSCRIPTION_ID', variable: 'ARM_SUBSCRIPTION_ID')]) 
+                withCredentials([string(credentialsId: 'AZURE_CLIENT_ID', variable: 'ARM_CLIENT_ID'),
+                                 string(credentialsId: 'AZURE_CLIENT_SECRET', variable: 'ARM_CLIENT_SECRET'),
+                                 string(credentialsId: 'AZURE_TENANT_ID', variable: 'ARM_TENANT_ID'),
+                                 string(credentialsId: 'AZURE_SUBSCRIPTION_ID', variable: 'ARM_SUBSCRIPTION_ID')]) 
                                  {
                                     bat '''
                                         terraform --version
@@ -42,10 +42,10 @@ pipeline {
 
         stage('Terraform Apply') {
             steps {
-                withCredentials([string(credentialsID: 'AZURE_CLIENT_ID', variable: 'ARM_CLIENT_ID'),
-                                 string(credentialsID: 'AZURE_CLIENT_SECRET', variable: 'ARM_CLIENT_SECRET'),
-                                 string(credentialsID: 'AZURE_TENANT_ID', variable: 'ARM_TENANT_ID'),
-                                 string(credentialsID: 'AZURE_SUBSCRIPTION_ID', variable: 'ARM_SUBSCRIPTION_ID')]) 
+                withCredentials([string(credentialsId: 'AZURE_CLIENT_ID', variable: 'ARM_CLIENT_ID'),
+                                 string(credentialsId: 'AZURE_CLIENT_SECRET', variable: 'ARM_CLIENT_SECRET'),
+                                 string(credentialsId: 'AZURE_TENANT_ID', variable: 'ARM_TENANT_ID'),
+                                 string(credentialsId: 'AZURE_SUBSCRIPTION_ID', variable: 'ARM_SUBSCRIPTION_ID')]) 
                                  {
                                     bat '''
                                         terraform apply -auto-approve tfplan
