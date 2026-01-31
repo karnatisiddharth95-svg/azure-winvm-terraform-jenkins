@@ -1,1 +1,11 @@
-dfsdfss
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfvars.json
+*.tfplan
+
+# Keep the lockfile in VCS
+!.terraform.lock.hcl
