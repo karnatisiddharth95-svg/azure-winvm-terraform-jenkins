@@ -24,10 +24,10 @@ pipeline {
                                  string(credentialsId: 'AZURE_SUBSCRIPTION_ID', variable: 'ARM_SUBSCRIPTION_ID')]) 
                                  {
                                     bat '''
-                                        terraform --version
-                                        terraform init
-                                        terraform validate
-                                        terraform plan -out=tfplan
+                                        "C:\Terraform\terraform.exe" --version
+                                        "C:\Terraform\terraform.exe" init
+                                        "C:\Terraform\terraform.exe" validate
+                                        "C:\Terraform\terraform.exe" plan -out=tfplan
                                     '''
                                  }
             }
