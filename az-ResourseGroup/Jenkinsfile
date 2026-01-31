@@ -7,6 +7,7 @@ pipeline {
 
     environment {
         TF_IN_AUTOMATION = "true"
+        TF_BIN = "C:/Terraform/terraform.exe"
     }
 
     stages {
@@ -21,15 +22,14 @@ pipeline {
                 withCredentials([string(credentialsId: 'AZURE_CLIENT_ID', variable: 'ARM_CLIENT_ID'),
                                  string(credentialsId: 'AZURE_CLIENT_SECRET', variable: 'ARM_CLIENT_SECRET'),
                                  string(credentialsId: 'AZURE_TENANT_ID', variable: 'ARM_TENANT_ID'),
-                                 string(credentialsId: 'AZURE_SUBSCRIPTION_ID', variable: 'ARM_SUBSCRIPTION_ID')]) 
-                                 {
-                                    bat '''
-                                        "C:/Terraform/terraform.exe" --version
-                                        "C:/Terraform/terraform.exe" init
-                                        "C:/Terraform/terraform.exe" validate
-                                        "C:/Terraform/terraform.exe" plan -out=tfplan
-                                    '''
-                                 }
+                                 string(credentialsId: 'AZURE_SUBSCRIPTION_ID', variable: 'ARM_SUBSCRIPTION_ID')]) {
+                    bat '''
+                        "%TF_BIN%" --version
+                        "%TF_BIN%" init -input=false -no-color
+                        "%TF_BIN%" validate -no-color
+                        "%TF_BIN%" plan -out=tfplan -no-color
+                    '''
+                }
             }
         }
         stage('Manual Approval') {
@@ -45,13 +45,12 @@ pipeline {
                 withCredentials([string(credentialsId: 'AZURE_CLIENT_ID', variable: 'ARM_CLIENT_ID'),
                                  string(credentialsId: 'AZURE_CLIENT_SECRET', variable: 'ARM_CLIENT_SECRET'),
                                  string(credentialsId: 'AZURE_TENANT_ID', variable: 'ARM_TENANT_ID'),
-                                 string(credentialsId: 'AZURE_SUBSCRIPTION_ID', variable: 'ARM_SUBSCRIPTION_ID')]) 
-                                 {
-                                    bat '''
-                                        terraform apply -auto-approve tfplan
-                                        terraform output
-                                    '''
-                                 }
+                                 string(credentialsId: 'AZURE_SUBSCRIPTION_ID', variable: 'ARM_SUBSCRIPTION_ID')]) {
+                    bat '''
+                        "%TF_BIN%" apply -auto-approve tfplan -no-color
+                        "%TF_BIN%" output -no-color -json
+                    '''
+                }
             }
         }
 }
