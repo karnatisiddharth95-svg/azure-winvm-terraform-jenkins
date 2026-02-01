@@ -1,0 +1,3 @@
+resource_group_name      = "my-existing-rg"
+storage_account_prefix   = "myacc"       # ensure prefix length leaves room for suffix (<=24 total)
+containers               = ["data","logs","backup"]
