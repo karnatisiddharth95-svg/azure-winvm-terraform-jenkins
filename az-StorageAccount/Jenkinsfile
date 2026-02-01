@@ -1,0 +1,62 @@
+pipeline {
+    agent any
+
+    options {
+        timestamps()
+    }
+
+    environment {
+        TF_IN_AUTOMATION = "true"
+        TF_BIN = "C:/Terraform/terraform.exe"
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Terraform init/validate/plan') {
+            steps {
+                dir('az-StorageAccount') {
+                    withCredentials([string(credentialsId: 'AZURE_CLIENT_ID', variable: 'ARM_CLIENT_ID'),
+                                     string(credentialsId: 'AZURE_CLIENT_SECRET', variable: 'ARM_CLIENT_SECRET'),
+                                     string(credentialsId: 'AZURE_TENANT_ID', variable: 'ARM_TENANT_ID'),
+                                     string(credentialsId: 'AZURE_SUBSCRIPTION_ID', variable: 'ARM_SUBSCRIPTION_ID')]) {
+                        bat '''
+                            "%TF_BIN%" --version
+                            "%TF_BIN%" init -input=false -no-color
+                            "%TF_BIN%" validate -no-color
+                            "%TF_BIN%" plan -out=tfplan -no-color
+                        '''
+                    }
+                }
+            }
+        }
+
+        stage('Manual Approval') {
+            steps {
+                timeout(time: 10, unit: 'MINUTES') {
+                    input message: 'Proceed with Terraform Apply (Create Storage Account and Containers)?'
+                }
+            }
+        }
+
+        stage('Terraform Apply') {
+            steps {
+                dir('az-StorageAccount') {
+                    withCredentials([string(credentialsId: 'AZURE_CLIENT_ID', variable: 'ARM_CLIENT_ID'),
+                                     string(credentialsId: 'AZURE_CLIENT_SECRET', variable: 'ARM_CLIENT_SECRET'),
+                                     string(credentialsId: 'AZURE_TENANT_ID', variable: 'ARM_TENANT_ID'),
+                                     string(credentialsId: 'AZURE_SUBSCRIPTION_ID', variable: 'ARM_SUBSCRIPTION_ID')]) {
+                        bat '''
+                            "%TF_BIN%" apply -auto-approve tfplan -no-color
+                            "%TF_BIN%" output -no-color -json
+                        '''
+                    }
+                }
+            }
+        }
+    }
+}
