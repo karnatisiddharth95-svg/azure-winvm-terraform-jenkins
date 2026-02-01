@@ -7,6 +7,10 @@ variable "storage_account_prefix" {
   type        = string
   default     = "stacc"
   description = "Prefix for storage account name (will get a short random suffix). Must keep overall name <= 24 chars."
+validation {
+  condition = length(regexall("^[a-z0-9]{3,18}$", var.storage_account_prefix)) == 1
+  error_message = "storage_account_prefix must be 3–18 chars, lowercase letters and numbers only (no underscores)."
+}
 }
 
 variable "account_tier" {
