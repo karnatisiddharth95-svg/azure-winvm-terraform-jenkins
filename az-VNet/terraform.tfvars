@@ -1,5 +1,5 @@
-resource_group_name="Your_existing_RG"
-location="Your_RG_lLocation"
+resource_group_name="rg-hamsi-terraform-lab"
+location="West Europe"
 
 vnet_name="lab-vnet-01"
 address_space=["10.20.0.0/16"]
