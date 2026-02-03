@@ -8,13 +8,13 @@ variable "location" {
   type = string
 }
 
-variable "Vnet_name" {
+variable "vnet_name" {
   description = "Virtual Network Name"
   type = string
   default = "lab-vnet-01"
 }
 
-variable "address_name" {
+variable "address_space" {
   description = "The address space for the VNet"
   type = list(string)
   default = [ "10.20.0.0/16" ]
@@ -26,10 +26,10 @@ variable "subnet_name" {
     default = "lab-subnet-01"
 }
 
-variable "subnet_prifix" {
-  description = "Subnet Prifix"
+variable "subnet_prefixes" {
+  description = "Subnet Prefixes"
   type = list(string)
-  default = "10.20.1.0/24"
+  default = [ "10.20.1.0/24" ]
 }
 
 variable "create_subnet" {
