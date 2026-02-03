@@ -16,7 +16,7 @@ pipeline {
 
         stage('Terraform init/validate/plan') {
             steps {
-                dir('az-Vnet') {
+                dir('az-VNet') {
                     withCredentials([string(credentialsId: 'AZURE_CLIENT_ID', variable: 'ARM_CLIENT_ID'),
                                      string(credentialsId: 'AZURE_CLIENT_SECRET', variable: 'ARM_CLIENT_SECRET'),
                                      string(credentialsId: 'AZURE_TENANT_ID', variable: 'ARM_TENANT_ID'),
@@ -41,7 +41,7 @@ pipeline {
 
         stage('Terraform Apply') {
             steps {
-                dir('az-Vnet') {
+                dir('az-VNet') {
                     withCredentials([string(credentialsId: 'AZURE_CLIENT_ID', variable: 'ARM_CLIENT_ID'),
                                      string(credentialsId: 'AZURE_CLIENT_SECRET', variable: 'ARM_CLIENT_SECRET'),
                                      string(credentialsId: 'AZURE_TENANT_ID', variable: 'ARM_TENANT_ID'),
