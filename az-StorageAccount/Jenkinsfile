@@ -52,6 +52,7 @@ pipeline {
                                      string(credentialsId: 'AZURE_SUBSCRIPTION_ID', variable: 'ARM_SUBSCRIPTION_ID')]) {
                         bat '''
                             "%TF_BIN%" apply -auto-approve tfplan -no-color
+                            if %ERRORLEVEL% NEQ 0 exit /b %ERRORLEVEL%
                             "%TF_BIN%" output -no-color -json
                         '''
                     }
